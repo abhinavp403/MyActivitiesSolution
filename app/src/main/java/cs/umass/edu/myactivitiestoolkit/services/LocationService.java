@@ -67,6 +67,13 @@ public class LocationService extends SensorService implements LocationListener {
                 this,
                 getMainLooper());
 
+//        getFusedLocationProviderClient(this).requestLocationUpdates(
+//                LocationManager.GPS_PROVIDER,
+//                MIN_TIME,
+//                MIN_DISTANCE,
+//                this,
+//                getMainLooper());
+
     }
 
     @Override

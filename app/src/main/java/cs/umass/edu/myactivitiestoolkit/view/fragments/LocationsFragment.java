@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
@@ -147,6 +148,13 @@ public class LocationsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         serviceManager = ServiceManager.getInstance(getActivity());
         userID = getString(R.string.mobile_health_client_user_id);
+
+        // TODO: get this from preferences
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("preferences", 0);
+        if (sharedPreferences.contains("badge-id")) {
+            userID = sharedPreferences.getString("badge-id", userID);
+        }
+
         client = MobileIOClient.getInstance(getActivity(), userID);
     }
 

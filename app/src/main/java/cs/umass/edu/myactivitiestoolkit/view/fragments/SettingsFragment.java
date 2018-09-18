@@ -1,9 +1,14 @@
 package cs.umass.edu.myactivitiestoolkit.view.fragments;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.view.View;
+import android.widget.EditText;
 
 import cs.umass.edu.myactivitiestoolkit.R;
+import cs.umass.edu.myactivitiestoolkit.constants.Constants;
 
 /**
  * The Settings fragment allows the user to modify all shared applications preferences.
@@ -22,5 +27,7 @@ public class SettingsFragment extends PreferenceFragment {
 
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preference);
+
     }
+
 }

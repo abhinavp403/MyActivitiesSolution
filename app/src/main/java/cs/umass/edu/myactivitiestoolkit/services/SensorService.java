@@ -4,7 +4,9 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -138,6 +140,14 @@ public abstract class SensorService extends Service implements ConnectionStateHa
      */
     protected void connectToServer(){
         userID = getString(R.string.mobile_health_client_user_id);
+        userID = null;
+
+//        SharedPreferences sharedPreferences = getSharedPreferences("preferences", 0);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (sharedPreferences.contains("badge-id")) {
+            userID = sharedPreferences.getString("badge-id", userID);
+        }
+
         client = MobileIOClient.getInstance(this, userID);
         client.setConnectionStateHandler(this);
         client.connect();
