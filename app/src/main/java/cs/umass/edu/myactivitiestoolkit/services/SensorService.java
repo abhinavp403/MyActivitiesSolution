@@ -139,10 +139,8 @@ public abstract class SensorService extends Service implements ConnectionStateHa
      * Connects to the data collection server.
      */
     protected void connectToServer(){
-        userID = getString(R.string.mobile_health_client_user_id);
         userID = null;
 
-//        SharedPreferences sharedPreferences = getSharedPreferences("preferences", 0);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (sharedPreferences.contains("badge-id")) {
             userID = sharedPreferences.getString("badge-id", userID);

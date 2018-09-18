@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.util.ArrayMap;
@@ -147,10 +148,9 @@ public class LocationsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         serviceManager = ServiceManager.getInstance(getActivity());
-        userID = getString(R.string.mobile_health_client_user_id);
+        userID = null;
 
-        // TODO: get this from preferences
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("preferences", 0);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         if (sharedPreferences.contains("badge-id")) {
             userID = sharedPreferences.getString("badge-id", userID);
         }
