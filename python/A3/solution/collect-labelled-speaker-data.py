@@ -18,11 +18,11 @@ import numpy as np
 import os
 
 # TODO: Replace the string with your user ID
-user_id = "42.8d.7c.7d.69.92.f8.eb.dc.b5"
+user_id = "a3_test"
 
 # TODO: Change the filename of the output file.
 # You should keep it in the format "speaker-data-<speaker>-#.csv"
-filename="speaker-data-none-4.csv"#"speaker-data-HenryVIII-1.csv"
+filename="speaker-data-test-5.csv"#"speaker-data-HenryVIII-1.csv"
 
 # 0=Erik, 1=Sean, 2=None, 3=Soha
 
