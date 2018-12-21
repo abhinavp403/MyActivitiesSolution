@@ -9,9 +9,14 @@ import android.os.Build;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 import cs.umass.edu.myactivitiestoolkit.R;
 import cs.umass.edu.myactivitiestoolkit.communication.MHLClientFilter;
@@ -19,8 +24,9 @@ import cs.umass.edu.myactivitiestoolkit.processing.Filter;
 import cs.umass.edu.myactivitiestoolkit.steps.OnStepListener;
 import cs.umass.edu.myactivitiestoolkit.constants.Constants;
 import cs.umass.edu.myactivitiestoolkit.steps.StepDetector;
+import cs.umass.edu.myactivitiestoolkit.view.activities.LandingPageActivity;
 import edu.umass.cs.MHLClient.client.MessageReceiver;
-import edu.umass.cs.MHLClient.client.MobileIOClient;
+//import edu.umass.cs.MHLClient.client.MobileIOClient;
 import edu.umass.cs.MHLClient.sensors.AccelerometerReading;
 
 /**
@@ -79,7 +85,7 @@ import edu.umass.cs.MHLClient.sensors.AccelerometerReading;
  * Foreground Service</a>
  * @see SensorEventListener#onSensorChanged(SensorEvent)
  * @see SensorEvent
- * @see MobileIOClient
+ * //@see MobileIOClient
  */
 public class AccelerometerService extends SensorService implements SensorEventListener {
 
@@ -133,6 +139,54 @@ public class AccelerometerService extends SensorService implements SensorEventLi
     public void onConnected() {
         super.onConnected();
 
+        client.registerMessageReceiver(new MessageReceiver() {
+            @Override
+            protected void onMessageReceived(JSONObject json) {
+                ArrayList<String> act= new ArrayList<>();
+                Log.d("ENTER1", "**************");
+                act.add("sitting");
+                act.add("sitting");
+                act.add("walking");
+                act.add("sitting");
+                act.add("sitting");
+                if(act.size()==5) {
+                    Log.d("ifact", "bc");
+                    try {
+                        FileOutputStream stream = new FileOutputStream(LandingPageActivity.file, true);
+                        try{
+                            for(int i= 0; i<5; i++) {
+                                stream.write(act.get(i).getBytes());
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (FileNotFoundException e) {
+                        Log.d("Tag2", "ioexception");
+                        e.printStackTrace();
+                    }
+                }
+                String contents = "";
+                Scanner in = null;
+                try {
+                    in = new Scanner(LandingPageActivity.file);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                while (in.hasNextLine())
+                {
+                    contents += in.nextLine();
+                }
+                Log.d("filetag23", "Contents = " + contents);
+                String activity= null;
+                try {
+                    activity = String.valueOf(json.getJSONObject("Word"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Log.d("ENTERED2", activity);
+            }
+        });
+
         client.registerMessageReceiver(new MessageReceiver(MHLClientFilter.AVERAGE_ACCELERATION) {
             @Override
             protected void onMessageReceived(JSONObject json) {
@@ -164,6 +218,22 @@ public class AccelerometerService extends SensorService implements SensorEventLi
             }
         });
         client.registerMessageReceiver(new MessageReceiver(MHLClientFilter.ACTIVITY) {
+            @Override
+            protected void onMessageReceived(JSONObject json) {
+                Log.d(TAG, "Received activity update from server.");
+                String activity;
+                try {
+                    JSONObject data = json.getJSONObject("data");
+                    activity = data.getString("activity");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                Log.d(TAG, "Activity is : " + activity);
+                broadcastActivity(activity);
+            }
+        });
+        client.registerMessageReceiver(new MessageReceiver(MHLClientFilter.SITTING) {
             @Override
             protected void onMessageReceived(JSONObject json) {
                 Log.d(TAG, "Received activity update from server.");

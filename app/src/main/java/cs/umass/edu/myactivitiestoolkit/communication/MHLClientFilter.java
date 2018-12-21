@@ -23,4 +23,5 @@ public interface MHLClientFilter {
     String STEP = "STEP";
     String ACTIVITY = "ACTIVITY";
     String SPEAKER = "SPEAKER";
+    String SITTING = "SITTING";
 }

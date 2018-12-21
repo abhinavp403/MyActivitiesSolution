@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="white">#FAFAFA</color>
     <color name="colorLight">#080000ff</color>
     <color name="colorStatus">#160000ff</color>
     <color name="colorTabHighlight">#32020aff</color>
